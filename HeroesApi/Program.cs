@@ -1,5 +1,4 @@
 using System.Text.Json;
-using.System.Text.Json.Serialization;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,3 +23,5 @@ if (app.Environment.IsDevelopment()) {
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.MapControllers();
+
+app.Run();
