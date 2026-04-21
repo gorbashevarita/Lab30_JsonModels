@@ -23,15 +23,23 @@ public class HeroesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Hero> GetById(int id)
-    {
+    public ActionResult<Hero> GetById(int id) {
         var hero = HeroesStore.Heroes.FirstOrDefault(h => h.Id == id);
-        if (hero is null)
-        {
+        if (hero is null) {
             return NotFound(new { message = $"Герой с id={id} не найден" });
         }
         return Ok(hero);
     }
+    
+    [HttpGet("search")]
+    public ActionResult<List<Hero>> Search([FromQuery] string name)
+    {
+        var foundHeroes = HeroesStore.Heroes
+            .Where(h => h.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+        return Ok(foundHeroes);
+    }
+
     [HttpGet("demo")]
     public ActionResult GetDemo() {
         var hero = HeroesStore.Heroes.First();
@@ -65,7 +73,7 @@ public class HeroesController : ControllerBase
             RealName = "Студент",
             Universe = Universe.Marvel,
             PowerLevel = 50,
-            Powers = new() {"программирование", "дэбаггинг" },
+            Powers = new() { "программирование", "дэбаггинг" },
             Weapon = new() { Name = "Клавиатура", IsRanged = false },
             InternalNotes = "Это поле не попадёт в JSON"
         };
